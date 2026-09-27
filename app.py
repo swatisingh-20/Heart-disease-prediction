@@ -2,20 +2,12 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-
-# =========================================================
 # LOAD MODEL
-# =========================================================
-
 model = joblib.load("KNN_heart.pkl")
 scaler = joblib.load("scaler.pkl")
 expected_columns = joblib.load("columns.pkl")
 
-
-# =========================================================
 # PAGE CONFIGURATION
-# =========================================================
-
 st.set_page_config(
     page_title="Heart Disease Prediction",
     page_icon="❤️",
@@ -23,10 +15,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-
-# =========================================================
 # CUSTOM DESIGN
-# =========================================================
 
 st.markdown("""
 <style>
@@ -208,10 +197,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-
-# =========================================================
 # PATIENT INFORMATION
-# =========================================================
 
 st.markdown("""
 <div class="card">
@@ -278,10 +264,7 @@ with col2:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-
-# =========================================================
 # HEART PARAMETERS
-# =========================================================
 
 st.markdown("""
 <div class="card">
@@ -316,10 +299,7 @@ with col3:
 
 st.markdown("</div>", unsafe_allow_html=True)
 
-
-# =========================================================
 # PREDICT BUTTON
-# =========================================================
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -328,10 +308,7 @@ if st.button(
     use_container_width=True
 ):
 
-    # -----------------------------------------------------
     # RAW INPUT
-    # -----------------------------------------------------
-
     raw_input = {
         "Age": age,
         "RestingBP": resting_bp,
@@ -347,48 +324,27 @@ if st.button(
     }
 
 
-    # -----------------------------------------------------
-    # DATAFRAME
-    # -----------------------------------------------------
+      # DATAFRAME
 
     input_df = pd.DataFrame([raw_input])
 
-
-    # -----------------------------------------------------
-    # ADD MISSING COLUMNS
-    # -----------------------------------------------------
-
+  # ADD MISSING COLUMNS
+    
     for col in expected_columns:
 
         if col not in input_df.columns:
             input_df[col] = 0
 
-
-    # -----------------------------------------------------
     # COLUMN ORDER
-    # -----------------------------------------------------
-
     input_df = input_df[expected_columns]
 
-
-    # -----------------------------------------------------
     # SCALE INPUT
-    # -----------------------------------------------------
-
     scaled_input = scaler.transform(input_df)
-
-
-    # -----------------------------------------------------
-    # MODEL PREDICTION
-    # -----------------------------------------------------
 
     prediction = model.predict(scaled_input)[0]
 
-
-    # =====================================================
     # RESULT
-    # =====================================================
-
+    
     st.markdown(
         '<div class="result-title">📊 Prediction Result</div>',
         unsafe_allow_html=True
@@ -414,10 +370,7 @@ if st.button(
     "It should not be considered a medical diagnosis."
 )
 
-
-# =========================================================
 # FOOTER
-# =========================================================
 
 st.markdown(
     '<div class="footer">'
